@@ -1,0 +1,31 @@
+{
+  "name": "db-retention",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/burcarz/db-retention.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/burcarz/db-retention/issues"
+  },
+  "homepage": "https://github.com/burcarz/db-retention#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cookie": "^0.5.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.1",
+    "express-session": "^1.17.3",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.16",
+    "nonce": "^1.0.4",
+    "sequelize": "^6.21.0",
+    "shopify-api-node": "^3.9.1"
+  }
+}
