@@ -1,4 +1,9 @@
 const router = require('express').Router();
+const crypto = require('crypto');
+const nonce = require('nonce')();
+const request = require('request-promise');
+const querystring = require('querystring');
+const cookie = require('cookie');
 
 router.get('/shopify-api', (req, res) => {
     const shopName = req.query.shop_name;
@@ -16,6 +21,7 @@ router.get('/shopify-api', (req, res) => {
 
         res.cookie('state', shopState);
         res.redirect(shopifyURL);
+        console.log(shopifyURL);
     } else {
         return res.status(400).send('Missing shop name parameter uh oh!');
     }
