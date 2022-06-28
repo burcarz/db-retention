@@ -1,9 +1,10 @@
 // sequelize import
-import sequelize from 'sequelize';
+import Sequelize from 'sequelize';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 let sequelize;
-// hide credentials
-require('dotenv').config();
 
 // local db instantiation
 sequelize = new Sequelize(
@@ -18,4 +19,4 @@ sequelize = new Sequelize(
 
 console.log('loaded data');
 
-module.exports = sequelize;
+export default sequelize;

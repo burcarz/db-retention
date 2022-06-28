@@ -1,27 +1,11 @@
 import express from 'express';
 import crypto from 'crypto';
-import dotenv from 'dotenv';
 import nonce from 'nonce';
 import request from 'request-promise';
 import querystring from 'querystring';
 import cookie from 'cookie';
-import { Shopify, ApiVersion } from '@shopify/shopify-api';
 
 const router = express.Router();
-
-dotenv.config();
-
-const { API_SECRET, API_KEY, SCOPES, HOST, SHOP } = process.env;
-
-Shopify.Context.initialize({
-    API_KEY,
-    API_SECRET,
-    SCOPES: [SCOPES],
-    HOST_NAME: HOST.replace(/https?:\/\//, ""),
-    HOST_SCHEME: HOST.split("://")[0],
-    IS_EMBEDDED_APP: false,
-    API_VERSION: ApiVersion.April22,
-  });
 
 // Storing the currently active shops in memory will force them to re-login when server restarts
 const ACTIVE_SHOPIFY_SHOPS = {};
