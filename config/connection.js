@@ -1,5 +1,5 @@
 // sequelize import
-const Sequelize = require('sequelize');
+import sequelize from 'sequelize';
 
 let sequelize;
 // hide credentials

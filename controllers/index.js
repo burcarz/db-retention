@@ -1,8 +1,10 @@
 // constants
-const router = require('express').Router();
+// const router = require('express').Router();
+import express from 'express';
+const router = express.Router();
 
 // routes
-const shopifyRoutes = require('./shopify-routes.js');
+import shopifyRoutes from './shopify-routes.js';
 
 // router directions
 router.use('/', shopifyRoutes);
@@ -12,4 +14,4 @@ router.use((req, res)=> {
     res.status(404).end();
 });
 
-module.exports = router;
+export default router;

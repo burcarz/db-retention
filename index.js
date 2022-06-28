@@ -5,10 +5,9 @@
 
 // ---------------------------------------
 // IMPORTS
-const express = require('express');
-const routes = require('./controllers');
-
-const path = require('path');
+import express from 'express';
+import routes from './controllers/index.js';
+import path from 'path';
 
 // Hide credentials !!! (?!) !!
 require('dotenv').config();

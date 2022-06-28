@@ -1,87 +1,67 @@
-const router = require('express').Router();
-const crypto = require('crypto');
-const nonce = require('nonce')();
-const request = require('request-promise');
-const querystring = require('querystring');
-const cookie = require('cookie');
+import express from 'express';
+import crypto from 'crypto';
+import dotenv from 'dotenv';
+import nonce from 'nonce';
+import request from 'request-promise';
+import querystring from 'querystring';
+import cookie from 'cookie';
+import { Shopify, ApiVersion } from '@shopify/shopify-api';
 
-router.get('/shopify-api', (req, res) => {
-    const shopName = req.query.shop_name;
-    if (shopName) {
-        const shopState = nonce();
-        // shopify callback direct
-        const redirectURL = process.env.TUNNEL_URL + '/shopify-api/callback';
+const router = express.Router();
 
-        // install URL for app install
-        const shopifyURL = 'https://' + shopName +
-            '/admin/oauth/authorize?client_id' + process.env.SHOPIFY_API_KEY +
-            '&scope=' + process.env.SCOPES +
-            '&state=' + shopState +
-            '&redirect_uri' + redirectURL;
+dotenv.config();
 
-        res.cookie('state', shopState);
-        res.redirect(shopifyURL);
-        console.log(shopifyURL);
-    } else {
-        return res.status(400).send('Missing shop name parameter uh oh!');
-    }
-});
+const { API_SECRET, API_KEY, SCOPES, HOST, SHOP } = process.env;
 
-router.get('/shopify-api/callback', (req, res) => {
-    const { shopName, hmac, code, shopState } = req.query;
-    const stateCookie = cookie.parse(req.headers.cookie).state;
+Shopify.Context.initialize({
+    API_KEY,
+    API_SECRET,
+    SCOPES: [SCOPES],
+    HOST_NAME: HOST.replace(/https?:\/\//, ""),
+    HOST_SCHEME: HOST.split("://")[0],
+    IS_EMBEDDED_APP: false,
+    API_VERSION: ApiVersion.April22,
+  });
 
-    if (shopState !== stateCookie) {
-        return res.status(403).send('request origin cannot be verified');
-    }
+// Storing the currently active shops in memory will force them to re-login when server restarts
+const ACTIVE_SHOPIFY_SHOPS = {};
 
-    if (shopName && hmac && code) {
-        const queryMap = Object.assign({}, req.query);
-        delete queryMap['signature'];
-        delete queryMap['hmac'];
+router.get('/', async (req, res) => {
+    // This shop hasn't been seen yet, go through OAuth to create a session
+   if (ACTIVE_SHOPIFY_SHOPS[SHOP] === undefined) {
+      // not logged in, redirect to login
+     res.redirect(`/login`);
+   } else {
+     res.send("Hello world!");
+     
+     res.end();
+   }
+ });
+ 
+router.get('/login', async (req, res) => {
+     let authRoute = await Shopify.Auth.beginAuth(
+         req,
+         res,
+         SHOP,
+         '/auth/callback',
+         false,
+     );
+     return res.redirect(authRoute);
+ });
+ 
+router.get('/auth/callback', async (req, res) => {
+     try {
+         const session = await Shopify.Auth.validateAuthCallback(
+             req,
+             res,
+             req.query
+         );
+         ACTIVE_SHOPIFY_SHOPS[SHOP] = session.scope;
+         console.log(session.accessToken);
+     } catch (err) {
+         console.error(err)
+     }
+     return res.redirect(`/?host=${req.query.host}$shop=${req.query.shop}`);
+ })
 
-        const message = querystring.stringify(queryMap);
-        const providedHmac = Buffer.from(hmac, 'utf-8');
-        const generatedHash = Buffer.from(crypto.createHmac('sha256', process.env.SHOPIFY_API_SECRET).update(message).digest('hex'), 'utf-8');
-
-        let hashEquals = false;
-
-        try {
-            hasEquals = crypto.timingSafeEqual(generatedHash, providedHmac);
-        } catch (err) {
-            hashEquals = false;
-        }
-
-        if (!hashEquals) {
-            return res.status(400).send('HMAC validation failed! whoops!');
-        }
-        const accessTokenRquestUrl = 'https://' + shopName + '/admin/oauth/access_token';
-        const accessTokenPayload = {
-            client_id: process.env.SHOPIFY_API_KEY,
-            client_secret: process.env.SHOPIFY_API_SECRET,
-            code,
-        };
-
-        request.post(accessTokenRquestUrl, {json: accessTokenPayload})
-            .then((accessTokenResponse) => {
-                const accessToken = accessTokenResponse.access_token;
-                const shopRequestURL = 'https://' + shopName + '/admin/api2020-04/shop.json';
-                const shopRequestHeaders = {'X-Shopify=Access-Token': accessToken};
-
-                request.get(shopRequestURL, {headers: shopRequestHeaders})
-                    .then((shopResponse) => {
-                        res.redirect('https://' + shopName + '/admin/apps');
-                    })
-                    .catch((err) => {
-                        res.status(err.statusCode).send(err.error.error_description);
-                    });
-            })
-            .catch((err) => {
-                res.status(err.statusCode).send(err.error.error_description);
-            });
-    } else {
-        res.status(400).send('Required parameters missing');
-    }
-});
-
-module.exports = router;
+export default router;
