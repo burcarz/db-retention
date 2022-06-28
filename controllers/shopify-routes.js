@@ -4,6 +4,14 @@ import nonce from 'nonce';
 import request from 'request-promise';
 import querystring from 'querystring';
 import cookie from 'cookie';
+import Shopify from '@shopify/shopify-api';
+import { 
+        API_KEY,
+        SCOPES,
+        API_SECRET_KEY,
+        SHOP,
+        HOST
+       } from '../index.js';
 
 const router = express.Router();
 
@@ -11,41 +19,18 @@ const router = express.Router();
 const ACTIVE_SHOPIFY_SHOPS = {};
 
 router.get('/', async (req, res) => {
+  console.log('hellO!')
     // This shop hasn't been seen yet, go through OAuth to create a session
    if (ACTIVE_SHOPIFY_SHOPS[SHOP] === undefined) {
       // not logged in, redirect to login
+      console.log('oh no!')
      res.redirect(`/login`);
    } else {
+    console.log('hello!!!')
      res.send("Hello world!");
      
      res.end();
    }
  });
- 
-router.get('/login', async (req, res) => {
-     let authRoute = await Shopify.Auth.beginAuth(
-         req,
-         res,
-         SHOP,
-         '/auth/callback',
-         false,
-     );
-     return res.redirect(authRoute);
- });
- 
-router.get('/auth/callback', async (req, res) => {
-     try {
-         const session = await Shopify.Auth.validateAuthCallback(
-             req,
-             res,
-             req.query
-         );
-         ACTIVE_SHOPIFY_SHOPS[SHOP] = session.scope;
-         console.log(session.accessToken);
-     } catch (err) {
-         console.error(err)
-     }
-     return res.redirect(`/?host=${req.query.host}$shop=${req.query.shop}`);
- })
 
 export default router;

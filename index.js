@@ -18,18 +18,18 @@ dotenv.config();
 
 // ---------------------------------------
 // env imports and declarations
-const API_KEY = process.env.API_KEY;
-const API_SECRET_KEY = process.env.API_SECRET;
-const HOST = process.env.HOST;
-const SCOPES = process.env.SCOPES;
-const SHOP = process.env.SHOP;
+export const API_KEY = process.env.API_KEY;
+export const API_SECRET_KEY = process.env.API_SECRET;
+export const HOST = process.env.HOST;
+export const SCOPES = process.env.SCOPES;
+export const SHOP = process.env.SHOP;
 // ---------------------------------------
 
 const app = express();
 const PORT = process.env.PORT || 3434;
 
 // initialize shopify context
-Shopify.Context.initialize({
+export default Shopify.Context.initialize({
     API_KEY,
     API_SECRET_KEY,
     SCOPES: [SCOPES],
@@ -46,9 +46,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(routes);
 
 // sync db, do not force re seed
-sequelize.sync({ force: false }).then(() => {
+sequelize.sync({ force: true }).then(() => {
     app.listen(PORT, () => console.log(`Now listening on ${PORT} am i right`));
 });
-
-// export env vars
-export default { API_SECRET_KEY, API_KEY, SCOPES, HOST, SHOP };
