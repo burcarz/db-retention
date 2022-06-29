@@ -1,15 +1,16 @@
-import { Model, DataTypes } from 'sequelize';
-import sequelize from '../config/connection.js';
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/connection');
 
 // order class that extends model
-export class Order extends Model {}
+class Order extends Model {}
 
 Order.init(
     {
         id: {
             type: DataTypes.INTEGER,
-            allowNull: true,
+            allowNull: false,
             primaryKey: true,
+            autoIncrement: true,
         },
         name: {
             type: DataTypes.STRING,
@@ -57,6 +58,10 @@ Order.init(
                 key: "id",
             },
         },
+        created_at: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         tags: {
             type: DataTypes.STRING,
             allowNull: true,
@@ -64,9 +69,11 @@ Order.init(
     },
     {
         // boiler
-        sequelize,
         freezeTableName: true,
         underScored: true,
         modelName: "order",
+        sequelize,
     }
 );
+
+module.exports = Order;

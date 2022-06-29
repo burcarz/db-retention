@@ -1,6 +1,6 @@
-import { Customer } from '../models/Customer.js';
-import { sequelize } from '../config/connection.js';
-import * as data from  '../data/seed.json';
+const Customer = require('../models/Customer');
+const data = require('../data/seed.json');
+const sequelize = require('../config/connection');
 
 let customerData = JSON.parse(data);
 

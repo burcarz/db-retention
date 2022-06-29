@@ -1,14 +1,15 @@
-import { Model, DataTypes } from 'sequelize';
-import { sequelize } from '../config/connection.js';
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/connection');
 
-export class Customer extends Model {}
+class Customer extends Model {}
 
 Customer.init(
     {
         id: {
             type: DataTypes.INTEGER,
-            allowNull: true,
+            allowNull: false,
             primaryKey: true,
+            autoIncrement: true,
         },
         first_name: {
             type: DataTypes.STRING,
@@ -37,8 +38,8 @@ Customer.init(
         total_spent: {
             type: DataTypes.STRING,
         },
-        // pass connection
-        sequelize,
+    },
+    {
         // dont auto update timestamps
         timestamps: false,
         // no table name plurals
@@ -46,6 +47,11 @@ Customer.init(
         // turn underscores on
         underscored: true,
         // model name stays lowercase in db
-        modelName: "customer"
-    }
+        modelName: "customer",
+        // pass connection
+        sequelize,
+    },
+
 );
+
+module.exports = Customer;
