@@ -5,31 +5,47 @@
 
 // ---------------------------------------
 // IMPORTS
-import express from 'express';
-import routes from './controllers/index.js';
-import path from 'path';
-import dotenv from 'dotenv';
-import { Shopify, ApiVersion } from '@shopify/shopify-api';
-// Setup sql -- call config dir
-import sequelize from  './config/connection.js';
+const express = require('express');
+const routes = require('./controllers/');
+const dotenv = require('dotenv')
+const { Shopify, ApiVersion } = require('@shopify/shopify-api');
 
 // env config init
 dotenv.config();
 
 // ---------------------------------------
 // env imports and declarations
-export const API_KEY = process.env.API_KEY;
-export const API_SECRET_KEY = process.env.API_SECRET;
-export const HOST = process.env.HOST;
-export const SCOPES = process.env.SCOPES;
-export const SHOP = process.env.SHOP;
+const API_KEY = process.env.API_KEY;
+const API_SECRET_KEY = process.env.API_SECRET;
+const HOST = process.env.HOST;
+const SCOPES = process.env.SCOPES;
+const SHOP = process.env.SHOP;
 // ---------------------------------------
 
 const app = express();
 const PORT = process.env.PORT || 3434;
 
+// ---------------------------------------
+// db-session imports setup
+const session = require('express-session');
+const sequelize = require('./config/connection');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+
+const sess = {
+    secret: process.env.SESSION_PW,
+    cookie: {},
+    resave: false,
+    saveUnitialized: true,
+    store: new SequelizeStore({
+        db: sequelize
+    })
+};
+
+// app.use(session(sess));
+// ---------------------------------------
+
 // initialize shopify context
-export default Shopify.Context.initialize({
+Shopify.Context.initialize({
     API_KEY,
     API_SECRET_KEY,
     SCOPES: [SCOPES],
@@ -44,8 +60,17 @@ app.use(express.urlencoded({ extended: false }));
 
 // use routes (app is doing this) (app is express)
 app.use(routes);
+app.use(session(sess));
+app.use(require('./controllers'));
 
 // sync db, do not force re seed
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: false }).then(() => {
     app.listen(PORT, () => console.log(`Now listening on ${PORT} am i right`));
 });
+
+module.exports = { Shopify,
+                   API_KEY,
+                   API_SECRET_KEY,
+                   SHOP,
+                   SCOPES,
+                   HOST } ;

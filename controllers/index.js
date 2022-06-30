@@ -1,21 +1,18 @@
-// constants
-// const router = require('express').Router();
-import express from 'express';
-const router = express.Router();
+const router = require('express').Router();
 
 // routes
-import shopifyRoutes from './shopify-routes.js';
-import customerFetch from './customer-fetch.js';
-import orderFetch from './order-fetch.js';
+const fetchRoutes =  require('./fetch');
+const apiRoutes = require('./api')
+const shopifyRoutes = require('./shopify-routes');
 
 // router directions
 router.use('/', shopifyRoutes);
-router.use('/customers', customerFetch);
-router.use('/orders', orderFetch);
+router.use('/api', apiRoutes);
+router.use('/fetch', fetchRoutes);
 
 // 404 passthroughs
 router.use((req, res)=> {
     res.status(404).end();
 });
 
-export default router;
+module.exports = router;
