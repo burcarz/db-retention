@@ -4,6 +4,7 @@ const { Order } = require('../../models');
 router.get('/', (req, res) => {
     Order.findAll({
         attributes: [
+            'id',
             'name',
             'currency',
             'confirmed',

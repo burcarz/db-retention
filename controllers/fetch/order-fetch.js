@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     let orderData;
 
     fetch(
-    'https://nuvitacb.myshopify.com/admin/api/2022-04/orders.json?limit=250',
+    'https://nuvitacb.myshopify.com/admin/api/2022-04/orders.json?limit-250',
     {
         method: 'GET',
         headers: {

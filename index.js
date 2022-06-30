@@ -64,7 +64,7 @@ app.use(session(sess));
 app.use(require('./controllers'));
 
 // sync db, do not force re seed
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: false }).then(() => {
     app.listen(PORT, () => console.log(`Now listening on ${PORT} am i right`));
 });
 
