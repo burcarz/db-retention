@@ -6,7 +6,7 @@
 // ---------------------------------------
 // IMPORTS
 const express = require('express');
-const routes = require('./controllers/');
+const routes = require('./controllers');
 const dotenv = require('dotenv')
 const { Shopify, ApiVersion } = require('@shopify/shopify-api');
 
@@ -63,14 +63,18 @@ app.use(routes);
 app.use(session(sess));
 app.use(require('./controllers'));
 
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
+})
+
 // sync db, do not force re seed
 sequelize.sync({ force: false }).then(() => {
     app.listen(PORT, () => console.log(`Now listening on ${PORT} am i right`));
 });
 
-module.exports = { Shopify,
-                   API_KEY,
-                   API_SECRET_KEY,
-                   SHOP,
-                   SCOPES,
-                   HOST } ;
+// module.exports = { Shopify,
+//                    API_KEY,
+//                    API_SECRET_KEY,
+//                    SHOP,
+//                    SCOPES,
+//                    HOST } ;
