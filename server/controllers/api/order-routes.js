@@ -15,7 +15,8 @@ router.get('/', (req, res) => {
             'total_line_items_price',
             'subtotal_price',
             'tags',
-            'created_at'
+            'created_at',
+            'order_id'
         ]
     })
     .then(dbOrderData => res.json(dbOrderData))

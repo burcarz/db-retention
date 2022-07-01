@@ -7,24 +7,23 @@ const { Order } = require('../../models')
 dotenv.config();
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 
-console.log('order fetch called');
-
-// fetch and seed customer data
+// fetch and seed order data
 router.get('/', (req, res) => {
+    console.log('order fetch called');
     let orderData;
 
     fetch(
-    'https://nuvitacb.myshopify.com/admin/api/2022-04/orders.json?limit-250',
-    {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Shopify-Access-Token': ACCESS_TOKEN
-        }
-    })
-    .then(res => res.json())
-    .then(data => orderData = data)
-    .then(() => createOrders(orderData.orders));
+        'https://nuvitacb.myshopify.com/admin/api/2022-04/orders.json?limit=250',
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Shopify-Access-Token': ACCESS_TOKEN
+            }
+        })
+        .then(res => res.json())
+        .then(data => orderData = data)
+        .then(() => createOrders(orderData.orders));
 
     const createOrders = (orderData) => {
         orderData.map(order => {
@@ -40,7 +39,8 @@ router.get('/', (req, res) => {
                 total_line_items_price: order.total_line_items_price,
                 subtotal_price: order.subtotal_price,
                 tags: order.tags,
-                created_at: order.created_at
+                created_at: order.created_at,
+                order_id: order.id,
             })
         });
     }

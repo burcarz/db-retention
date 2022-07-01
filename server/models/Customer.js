@@ -7,9 +7,13 @@ Customer.init(
     {
         id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
             primaryKey: true,
             autoIncrement: true,
+            allowNull: false,
+        },
+        customer_id: {
+            type: DataTypes.STRING,
+            allowNull: true
         },
         first_name: {
             type: DataTypes.STRING,

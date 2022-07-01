@@ -8,11 +8,16 @@ Order.init(
     {
         id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
             primaryKey: true,
             autoIncrement: true,
+            allowNull: false,
         },
         name: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            unique: false,
+        },
+        order_id: {
             type: DataTypes.STRING,
             allowNull: true,
         },
@@ -27,7 +32,7 @@ Order.init(
         email: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
+            defaultValue: 'null@null.com',
             validate: {
                 isEmail: true,
             }
@@ -52,11 +57,11 @@ Order.init(
             type: DataTypes.STRING,
             allowNull: true,
         },
-        customer_id: {
-            type: DataTypes.INTEGER,
+        customer_email: {
+            type: DataTypes.STRING,
             references: {
                 model: "customer",
-                key: "id",
+                key: "email",
             },
         },
         created_at: {

@@ -8,10 +8,9 @@ const { Customer } = require('../../models')
 dotenv.config();
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 
-console.log('customer fetch called')
-
 // fetch and seed customer data
 router.get('/', (req, res) => {
+    console.log('customer fetch called')
     let customerData;
 
     fetch(
@@ -36,7 +35,8 @@ router.get('/', (req, res) => {
                 email: customer.email,
                 orders_count: customer.orders_count,
                 state: customer.state,
-                total_spent: customer.total_spent
+                total_spent: customer.total_spent,
+                customer_id: customer.customer_id,
             })
         });
     }
