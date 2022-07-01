@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const { Customer } = require('../../models');
+const { Customer, Order } = require('../../models');
+const { sortEmail, binarySearch, loadData } = require('../../utils/sort');
 
 router.get('/', (req, res) => {
     Customer.findAll({
@@ -19,5 +20,10 @@ router.get('/', (req, res) => {
         res.status(500).json(err);
     });
 });
+
+router.get('/email', (req, res) => {
+    loadData();
+    res.end();
+})
 
 module.exports = router;
