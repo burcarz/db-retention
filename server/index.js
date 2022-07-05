@@ -8,6 +8,8 @@
 const express = require('express');
 const routes = require('./controllers');
 const dotenv = require('dotenv')
+const path = require('path');
+const cors = require('cors')
 const { Shopify, ApiVersion } = require('@shopify/shopify-api');
 
 // env config init
@@ -55,6 +57,7 @@ Shopify.Context.initialize({
     API_VERSION: ApiVersion.April22,
 });
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -62,6 +65,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(routes);
 app.use(session(sess));
 app.use(require('./controllers'));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build/index.html'));
