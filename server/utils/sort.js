@@ -6,27 +6,23 @@ const { Order, Customer } = require('../models');
 
 
 async function loadData() {
-    let c = await Customer.findAll();
-    console.log(c.every(c => c instanceof Customer));
+    let c = await Customer.findAll({ raw: true });
+    let o = await Order.findAll({ raw: true });
 
-    let o = await Order.findAll();
-    console.log(o.every(o => o instanceof Order));
-
-    const cStr = JSON.parse(c, null, 2);
-    const oStr = JSON.parse(o, null, 2);
-    console.log(cStr);
-    // sortEmail(oStr, cStr);
+    // const cStr = JSON.stringify(c, null, 2);
+    // const oStr = JSON.stringify(o, null, 2);
+    // console.log(c[0].email);
+    sortEmail(o, c);
 }
 
 // standard binary search
 async function binarySearch(sArr, k) {
     let s = 0;
     let e = sArr.length - 1;
-
     while (s <= e) {
         let m = Math.floor((s + e) / 2);
-
         if (sArr[m] ===  k) {
+            console.log(sArr[m]);
             return m
         } else if (sArr[m] < k) {
             s = m + 1;
@@ -38,20 +34,22 @@ async function binarySearch(sArr, k) {
 };
 
 async function sortEmail(o, c) {
-    for (i = 0; i < 250; i++) {
-        for (j = 0; j < 250; j++) {
-            if (c[i].email == o[j].email) {
-                console.log(c[i].email, o[j].email);
-                await Order.update({
-                    customer_id: c[i].id
-                },
-                {
-                    where: {
-                        email: o[j].email
-                    }
-                });
-            }
-        }
+    let cArr = [];
+    let oArr = [];
+    const customers = c.map(customer => {
+        cArr.push(customer.email);
+    })
+    // let cPop = cArr.pop();
+    const orders = o.map(order => {
+        oArr.push(order);
+    });
+    // let oPop = oArr.pop();
+    for (i = 0; i <= oArr.length; i++) {
+        if (oArr[i] == undefined) {
+            break;
+        };
+        // console.log(oArr[i]);
+        binarySearch(cArr, oArr[i].email);
     }
 };
 
