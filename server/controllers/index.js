@@ -3,10 +3,10 @@ const router = require('express').Router();
 // routes
 const fetchRoutes =  require('./fetch');
 const apiRoutes = require('./api')
-const shopifyRoutes = require('./shopify-routes');
+const homeRoutes = require('./home-routes');
 
 // router directions
-router.use('/', shopifyRoutes);
+router.use('/', homeRoutes);
 router.use('/api', apiRoutes);
 router.use('/fetch', fetchRoutes);
 

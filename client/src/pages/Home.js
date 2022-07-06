@@ -4,7 +4,7 @@ function Home () {
     return (
         <main>
             <div>
-                hello
+                GRAPHS / CHARTS GO HERE
             </div>
         </main>
     )

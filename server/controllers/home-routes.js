@@ -19,12 +19,12 @@ router.get('/', async (req, res) => {
           'total_spent',
           'state',
       ]
-  })
-  .then(dbCusData => res.json(dbCusData))
-  .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-  });
+    })
+    .then(dbCusData => res.json(dbCusData))
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
  });
 
 module.exports = router;
