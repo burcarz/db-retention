@@ -33,9 +33,6 @@ Order.init(
             type: DataTypes.STRING,
             allowNull: false,
             defaultValue: 'null@null.com',
-            validate: {
-                isEmail: true,
-            }
         },
         total_price: {
             type: DataTypes.STRING,
@@ -64,7 +61,11 @@ Order.init(
                 key: "email",
             },
         },
-        created_at: {
+        month_ordered: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        year_ordered: {
             type: DataTypes.STRING,
             allowNull: true,
         },

@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const fetch =  require('node-fetch');
 const { API_KEY, SCOPES, API_SECRET_KEY, SHOP, HOST } = require('../../index.js');
 const { Order } = require('../../models')
+const { sliceYear, sliceMonth } = require('../../utils/helper');
 
 dotenv.config();
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
@@ -39,7 +40,8 @@ router.get('/', (req, res) => {
                 total_line_items_price: order.total_line_items_price,
                 subtotal_price: order.subtotal_price,
                 tags: order.tags,
-                created_at: order.created_at,
+                month_ordered:  sliceMonth(order.created_at),
+                year_ordered: sliceYear(order.created_at),
                 order_id: order.id,
             })
         });

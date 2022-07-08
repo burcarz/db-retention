@@ -15,7 +15,8 @@ router.get('/', (req, res) => {
             'total_line_items_price',
             'subtotal_price',
             'tags',
-            'created_at',
+            'month_ordered',
+            'year_ordered',
             'order_id'
         ]
     })

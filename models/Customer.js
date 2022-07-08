@@ -27,9 +27,6 @@ Customer.init(
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
-            validate: {
-                isEmail: true,
-            }
         },
         orders_count: {
             type: DataTypes.INTEGER,

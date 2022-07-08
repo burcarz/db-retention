@@ -9,7 +9,8 @@ const express = require('express');
 const routes = require('./controllers');
 const dotenv = require('dotenv')
 const path = require('path');
-const cors = require('cors')
+const pug = require('pug');
+const helper = require('./utils/helper');
 const { Shopify, ApiVersion } = require('@shopify/shopify-api');
 
 // env config init
@@ -25,23 +26,26 @@ const SHOP = process.env.SHOP;
 // ---------------------------------------
 
 const app = express();
-const PORT = process.env.PORT || 3434;
+const PORT = process.env.PORT || 443;
+
+app.set('views', path.join(__dirname, 'views'))
+app.set("view engine", "pug");
 
 // ---------------------------------------
 // db-session imports setup
-const session = require('express-session');
-const sequelize = require('./config/connection');
-const SequelizeStore = require('connect-session-sequelize')(session.Store);
+// const session = require('express-session');
+// const sequelize = require('./config/connection');
+// const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
-const sess = {
-    secret: process.env.SESSION_PW,
-    cookie: {},
-    resave: false,
-    saveUnitialized: true,
-    store: new SequelizeStore({
-        db: sequelize
-    })
-};
+// const sess = {
+//     secret: process.env.SESSION_PW,
+//     cookie: {},
+//     resave: false,
+//     saveUnitialized: true,
+//     store: new SequelizeStore({
+//         db: sequelize
+//     })
+// };
 
 // app.use(session(sess));
 // ---------------------------------------
@@ -57,7 +61,6 @@ Shopify.Context.initialize({
     API_VERSION: ApiVersion.April22,
 });
 
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -72,8 +75,8 @@ app.get('*', (req, res) => {
 })
 
 // sync db, do not force re seed
-sequelize.sync({ force: false }).then(() => {
-    app.listen(PORT, () => console.log(`Now listening on ${PORT} am i right`));
+sequelize.sync({ force: true }).then(() => {
+    app.listen(PORT, () => console.log(`Now listening on ${PORT}`));
 });
 
 // module.exports = { Shopify,
