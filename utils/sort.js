@@ -10,7 +10,7 @@ async function loadData() {
     let o = await Order.findAll({ raw: true });
 
     // const cStr = JSON.stringify(c, null, 2);
-    // const oStr = JSON.stringify(o, null, 2);
+    
     // console.log(c[0].email);
     sortEmail(o, c);
 }
@@ -53,4 +53,29 @@ async function sortEmail(o, c) {
     }
 };
 
-module.exports = { binarySearch, sortEmail, loadData };
+function findOrderSince() {
+    let lastOrder;
+    Order.findAll({
+        raw: true,
+        attributes: [
+            'order_id'
+        ]
+    })
+    .then(dbOrData => {
+        lastOrder = dbOrData.pop();
+        console.log(lastOrder);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+    // console.log(o)
+
+    // const oStr = JSON.stringify(o, null, 2);
+    // const lastOrderId = lastOrder.order_id;
+    // console.log(lastOrderId);
+
+    // return lastOrderId;
+}
+
+module.exports = { binarySearch, sortEmail, loadData, };

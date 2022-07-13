@@ -26,7 +26,7 @@ const SHOP = process.env.SHOP;
 // ---------------------------------------
 
 const app = express();
-const PORT = process.env.PORT || 443;
+const PORT = process.env.PORT || 3434;
 
 app.set('views', path.join(__dirname, 'views'))
 app.set("view engine", "pug");
@@ -34,7 +34,7 @@ app.set("view engine", "pug");
 // ---------------------------------------
 // db-session imports setup
 // const session = require('express-session');
-// const sequelize = require('./config/connection');
+const sequelize = require('./config/connection');
 // const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 // const sess = {
@@ -66,7 +66,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // use routes (app is doing this) (app is express)
 app.use(routes);
-app.use(session(sess));
+// app.use(session(sess));
 app.use(require('./controllers'));
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -75,7 +75,7 @@ app.get('*', (req, res) => {
 })
 
 // sync db, do not force re seed
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: false }).then(() => {
     app.listen(PORT, () => console.log(`Now listening on ${PORT}`));
 });
 

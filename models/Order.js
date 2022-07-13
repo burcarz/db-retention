@@ -54,11 +54,11 @@ Order.init(
             type: DataTypes.STRING,
             allowNull: true,
         },
-        customer_email: {
-            type: DataTypes.STRING,
+        customer_id: {
+            type: DataTypes.INTEGER,
             references: {
                 model: "customer",
-                key: "email",
+                key: "id",
             },
         },
         month_ordered: {

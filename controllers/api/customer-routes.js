@@ -12,6 +12,7 @@ router.get('/', (req, res) => {
             'orders_count',
             'total_spent',
             'state',
+            'customer_id',
         ]
     })
     .then(dbCusData => res.json(dbCusData))

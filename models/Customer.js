@@ -25,8 +25,7 @@ Customer.init(
         },
         email: {
             type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
+            allowNull: true,
         },
         orders_count: {
             type: DataTypes.INTEGER,
