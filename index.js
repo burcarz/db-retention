@@ -33,22 +33,7 @@ app.set("view engine", "pug");
 
 // ---------------------------------------
 // db-session imports setup
-// const session = require('express-session');
 const sequelize = require('./config/connection');
-// const SequelizeStore = require('connect-session-sequelize')(session.Store);
-
-// const sess = {
-//     secret: process.env.SESSION_PW,
-//     cookie: {},
-//     resave: false,
-//     saveUnitialized: true,
-//     store: new SequelizeStore({
-//         db: sequelize
-//     })
-// };
-
-// app.use(session(sess));
-// ---------------------------------------
 
 // initialize shopify context
 Shopify.Context.initialize({
@@ -78,10 +63,3 @@ app.get('*', (req, res) => {
 sequelize.sync({ force: false }).then(() => {
     app.listen(PORT, () => console.log(`Now listening on ${PORT}`));
 });
-
-// module.exports = { Shopify,
-//                    API_KEY,
-//                    API_SECRET_KEY,
-//                    SHOP,
-//                    SCOPES,
-//                    HOST } ;

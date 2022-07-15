@@ -19,8 +19,7 @@ html(lang='en')
             th # of Orders
             th Amount Spent
         tbody
-          - let filteredcustomers = customers.filter(customer => customer.orders_count > 1);
-          each customer in filteredcustomers
+          each customer in customers
             tr
               td #{customer.first_name}
               td #{customer.last_name}

@@ -4,7 +4,7 @@
 // -------------------------------------
 const { Order, Customer } = require('../models');
 
-
+// LOAD IN DATA FROM DB AND CALL THE SORT EMAIL FUNCTION
 async function loadData() {
     let c = await Customer.findAll({ raw: true });
     let o = await Order.findAll({ raw: true });
@@ -15,15 +15,15 @@ async function loadData() {
     sortEmail(o, c);
 }
 
-// standard binary search
-async function binarySearch(sArr, k) {
+// STANDARD BINARY SEARCH
+function binarySearch(sArr, k) {
     let s = 0;
     let e = sArr.length - 1;
     while (s <= e) {
         let m = Math.floor((s + e) / 2);
         if (sArr[m] ===  k) {
             console.log(sArr[m]);
-            return m
+            return sArr[m];
         } else if (sArr[m] < k) {
             s = m + 1;
         } else  {
@@ -32,50 +32,25 @@ async function binarySearch(sArr, k) {
     }
     return -1;
 };
-
+// UPDATES THE ORDER MODEL TO BELONG TO A CUSTOMER W/ SAME EMAIL
 async function sortEmail(o, c) {
     let cArr = [];
     let oArr = [];
     const customers = c.map(customer => {
-        cArr.push(customer.email);
+        cArr.push(customer);
     })
-    // let cPop = cArr.pop();
-    const orders = o.map(order => {
-        oArr.push(order);
-    });
-    // let oPop = oArr.pop();
-    for (i = 0; i <= oArr.length; i++) {
-        if (oArr[i] == undefined) {
-            break;
-        };
-        // console.log(oArr[i]);
-        binarySearch(cArr, oArr[i].email);
-    }
+
+    updateDB(cArr)
 };
 
-function findOrderSince() {
-    let lastOrder;
-    Order.findAll({
-        raw: true,
-        attributes: [
-            'order_id'
-        ]
-    })
-    .then(dbOrData => {
-        lastOrder = dbOrData.pop();
-        console.log(lastOrder);
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json(err);
-    });
-    // console.log(o)
-
-    // const oStr = JSON.stringify(o, null, 2);
-    // const lastOrderId = lastOrder.order_id;
-    // console.log(lastOrderId);
-
-    // return lastOrderId;
+async function updateDB(customer) {
+    for (i = 0; i <= customer.length; i++) {
+        await Order.update({ customer_id:  customer[i].id }, {
+            where: {
+                email: customer[i].email
+            }
+        });
+    }
 }
 
 module.exports = { binarySearch, sortEmail, loadData, };

@@ -9,29 +9,27 @@ const { Customer, Order } = require('../models');
 const ACTIVE_SHOPIFY_SHOPS = {};
 
 // ORDER TABLE
-router.get('/orders', async (req, res) => {
-    Order.findAll({
+router.get('/retention', async (req, res) => {
+    Customer.findAll({
         attributes: [
-            'id',
-            'name',
-            'currency',
-            'confirmed',
             'email',
-            'total_price',
-            'total_discounts',
-            'total_tax',
-            'total_line_items_price',
-            'subtotal_price',
-            'tags',
-            'month_ordered',
-            'year_ordered',
-            'order_id'
+            'orders_count',
+            'total_spent',
+        ],
+        include: [
+            {
+                model: Order,
+                attributes: [
+                    'month_ordered',
+                    'year_ordered'
+                ]
+            }
         ]
     })
     .then(dbOrData => {
-        const orders = dbOrData.map( o => o.get());
+        const customers = dbOrData.map( o => o.get());
         res.render('retention', {
-            orders
+            customers
         })
     })
     .catch(err => {

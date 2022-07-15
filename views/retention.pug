@@ -1,7 +1,7 @@
 doctype html
 html(lang='en')
   head
-    title Order Data
+    title customers Data
     link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/semantic-ui@2.3.3/dist/semantic.min.css')
     style.
       table.ui.celled img { display: inline-block; }
@@ -27,33 +27,81 @@ html(lang='en')
             th 10
         tbody
             tr
+              td Jan 2021
+              - let Jan21customers = customers.filter(customer => customer.order.month_ordered === '01' && customer.order.year_ordered === '2021');
+              td #{Jan21customers.length}
+            tr
+              td Feb 2021
+              - let Feb21customers = customers.filter(customer => customer.order.month_ordered === '02' && customer.order.year_ordered === '2021');
+              td #{Feb21customers.length}
+            tr
+              td Mar 2021
+              - let Mar21customers = customers.filter(customer => customer.order.month_ordered === '03' && customer.order.year_ordered === '2021');
+              td #{Mar21customers.length}
+            tr
+              td Apr 2021
+              - let Apr21customers = customers.filter(customer => customer.order.month_ordered === '04' && customer.order.year_ordered === '2021');
+              td #{Apr21customers.length}
+            tr
+              td May 2021
+              - let May21customers = customers.filter(customer => customer.order.month_ordered === '05' && customer.order.year_ordered === '2021');
+              td #{May21customers.length}
+            tr
+              td Jun 2021
+              - let Jun21customers = customers.filter(customer => customer.order.month_ordered === '06' && customer.order.year_ordered === '2021');
+              td #{Jun21customers.length}
+            tr
+              td Jul 2021
+              - let Jul21customers = customers.filter(customer => customer.order.month_ordered === '07' && customer.order.year_ordered === '2021');
+              td #{Jul21customers.length}
+            tr
+              td Aug 2021
+              - let Aug21customers = customers.filter(customer => customer.order.month_ordered === '08' && customer.order.year_ordered === '2021');
+              td #{Aug21customers.length}
+            tr
+              td Sep 2021
+              - let Sep21customers = customers.filter(customer => customer.order.month_ordered === '09' && customer.order.year_ordered === '2021');
+              td #{Sep21customers.length}
+            tr
+              td Oct 2021
+              - let Oct21customers = customers.filter(customer => customer.order.month_ordered === '10' && customer.order.year_ordered === '2021');
+              td #{Oct21customers.length}
+            tr
+              td Nov 2021
+              - let Nov21customers = customers.filter(customer => customer.order.month_ordered === '11' && customer.order.year_ordered === '2021');
+              td #{Nov21customers.length}
+            tr
+              td Dec 2021
+              - let Dec21customers = customers.filter(customer => customer.order.month_ordered === '12' && customer.order.year_ordered === '2021');
+              td #{Dec21customers.length}
+            tr
               td Jan 2022
-              - let janOrders = orders.filter(order => order.month_ordered === '01');
-              td #{janOrders.length}
+              - let jancustomers = customers.filter(customer => customer.order.month_ordered === '01' && customer.order.year_ordered === '2022');
+              td #{jancustomers.length}
             tr
               td Feb 2022
-              - let febOrders = orders.filter(order => order.month_ordered === '02');
-              td #{febOrders.length}
+              - let febcustomers = customers.filter(customer => customer.order.month_ordered === '02' && customer.order.year_ordered === '2022');
+              td #{febcustomers.length}
             tr
               td Mar 2022
-              - let marOrders = orders.filter(order => order.month_ordered === '03');
-              td #{marOrders.length}
+              - let marcustomers = customers.filter(customer => customer.order.month_ordered === '03' && customer.order.year_ordered === '2022');
+              td #{marcustomers.length}
             tr
               td Apr 2022
-              - let aprOrders = orders.filter(order => order.month_ordered === '04');
-              td #{aprOrders.length}
+              - let aprcustomers = customers.filter(customer => customer.order.month_ordered === '04' && customer.order.year_ordered === '2022');
+              td #{aprcustomers.length}
             tr
               td May 2022
-              - let mayOrders = orders.filter(order => order.month_ordered === '05');
-              td #{mayOrders.length}
+              - let maycustomers = customers.filter(customer => customer.order.month_ordered === '05' && customer.order.year_ordered === '2022');
+              td #{maycustomers.length}
             tr
               td Jun 2022
-              - let junOrders = orders.filter(order => order.month_ordered === '06');
-              td #{junOrders.length}
+              - let juncustomers = customers.filter(customer => customer.order.month_ordered === '06' && customer.order.year_ordered === '2022');
+              td #{juncustomers.length}
             tr
               td Jul 2022
-              - let julOrders = orders.filter(order => order.month_ordered === '07');
-              td #{julOrders.length}
+              - let julcustomers = customers.filter(customer => customer.order.month_ordered === '07' && customer.order.year_ordered === '2022');
+              td #{julcustomers.length}
             tr
         tfoot
           tr

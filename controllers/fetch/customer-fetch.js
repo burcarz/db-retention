@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     let customerData;
 
     fetch(
-        'https://nuvitacb.myshopify.com/admin/api/2022-04/customers.json?limit=250',
+        'https://nuvitacb.myshopify.com/admin/api/2022-04/customers.json?limit=250&since_id=0',
         {
             method: 'GET',
             headers: {
@@ -25,49 +25,50 @@ router.get('/', (req, res) => {
         .then(res => res.json())
         .then(data => customerData = data)
         .then(() => createCustomers(customerData.customers));
+    res.end();
 });
 
 router.get('/since', (req, res) => {
-    let customerData;
-    // console.log(since);
     findCustomerSince();
-
-    function findCustomerSince() {
-        let lastCustomer;
-        let customerId;
-        Customer.findAll({
-            raw: true,
-            attributes: [
-                'customer_id'
-            ]
-        })
-        .then(dbCusData => {
-            lastCustomer = dbCusData.pop();
-            console.log(lastCustomer)
-            customerId = parseInt(lastCustomer.customer_id);
-        })
-        .then(() => sinceFetch(customerId))
-        .catch(err => {
-            console.log(err);
-            res.status(500).json(err);
-        });
-    }
-
-    function sinceFetch(customerId) {
-        fetch(
-            `https://nuvitacb.myshopify.com/admin/api/2022-04/customers.json?limit=250&since_id=${customerId}`,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Shopify-Access-Token': ACCESS_TOKEN
-                }
-            })
-            .then(res => res.json())
-            .then(data => customerData = data)
-            .then(() => createCustomers(customerData.customers));
-    }
+    res.end();
 });
+
+function findCustomerSince() {
+    let lastCustomer;
+    let customerId;
+    Customer.findAll({
+        raw: true,
+        attributes: [
+            'customer_id'
+        ]
+    })
+    .then(dbCusData => {
+        lastCustomer = dbCusData.pop();
+        console.log(lastCustomer)
+        customerId = parseInt(lastCustomer.customer_id);
+    })
+    .then(() => sinceFetch(customerId))
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+}
+
+function sinceFetch(customerId) {
+    let customerData;
+    fetch(
+        `https://nuvitacb.myshopify.com/admin/api/2022-04/customers.json?&limit=250&since_id=${customerId}`,
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Shopify-Access-Token': ACCESS_TOKEN
+            }
+        })
+        .then(res => res.json())
+        .then(data => customerData = data)
+        .then(() => createCustomers(customerData.customers));
+}
 
 const createCustomers = (customerData) => {
     customerData.map(customer => {
@@ -82,6 +83,7 @@ const createCustomers = (customerData) => {
             customer_id: customer.id,
         })
     });
+    findCustomerSince();
 }
 
 module.exports = router;
