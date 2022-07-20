@@ -4,6 +4,8 @@ const fetch =  require('node-fetch');
 const { API_KEY, SCOPES, API_SECRET_KEY, SHOP, HOST } = require('../index.js');
 const path = require('path');
 const { Customer, Order } = require('../models');
+const { retentionModel } = require('../utils/helper');
+const { Sequelize, Op } = require('sequelize');
 
 // Storing the currently active shops in memory will force them to re-login when server restarts
 const ACTIVE_SHOPIFY_SHOPS = {};
@@ -12,14 +14,15 @@ const ACTIVE_SHOPIFY_SHOPS = {};
 router.get('/retention', async (req, res) => {
     Customer.findAll({
         attributes: [
-            'email',
-            'orders_count',
-            'total_spent',
+            'id',
+            'customer_id',
+            'total_spent'
         ],
         include: [
             {
                 model: Order,
                 attributes: [
+                    'id',
                     'month_ordered',
                     'year_ordered'
                 ]
@@ -27,9 +30,11 @@ router.get('/retention', async (req, res) => {
         ]
     })
     .then(dbOrData => {
-        const customers = dbOrData.map( o => o.get());
+        let customers = dbOrData.map( o => o.get({ plain: true }));
+        firstOrders  = retentionModel(customers)
         res.render('retention', {
-            customers
+            customers,
+            firstOrders
         })
     })
     .catch(err => {
