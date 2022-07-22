@@ -88,8 +88,7 @@ const createOrders = (orderData) => {
                 total_line_items_price: order.total_line_items_price,
                 subtotal_price: order.subtotal_price,
                 tags: order.tags,
-                month_ordered:  sliceMonth(order.created_at),
-                year_ordered: sliceYear(order.created_at),
+                created_at: order.created_at,
                 order_id: order.id,
             })
         });

@@ -3,7 +3,8 @@ const dotenv = require('dotenv');
 const fetch =  require('node-fetch');
 const { API_KEY, SCOPES, API_SECRET_KEY, SHOP, HOST } = require('../../index.js');
 const sequelize = require('../../config/connection');
-const { Customer } = require('../../models')
+const { Customer } = require('../../models');
+const { CustomSessionStorage } = require('@shopify/shopify-api/dist/auth/session/index.js');
 
 dotenv.config();
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
@@ -81,6 +82,7 @@ const createCustomers = (customerData) => {
             state: customer.state,
             total_spent: customer.total_spent,
             customer_id: customer.id,
+            created_at: customer.created_at,
         })
     });
     findCustomerSince();

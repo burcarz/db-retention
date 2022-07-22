@@ -30,6 +30,7 @@
     "mysql2": "^2.3.3",
     "node-fetch": "^2.6.7",
     "nodemon": "^2.0.16",
+    "pg": "^8.7.3",
     "postgres": "^3.2.4",
     "pug": "^3.0.2",
     "request-promise": "^4.2.6",

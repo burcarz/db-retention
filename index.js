@@ -60,6 +60,6 @@ app.get('*', (req, res) => {
 })
 
 // sync db, do not force re seed
-sequelize.sync({ force: false }).then(() => {
+sequelize.sync({ force: true }).then(() => {
     app.listen(PORT, () => console.log(`Now listening on ${PORT}`));
 });

@@ -61,13 +61,8 @@ Order.init(
                 key: "id",
             },
         },
-        month_ordered: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        year_ordered: {
-            type: DataTypes.STRING,
-            allowNull: true,
+        created_at: {
+            type: DataTypes.DATE,
         },
         tags: {
             type: DataTypes.STRING,

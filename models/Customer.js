@@ -38,6 +38,9 @@ Customer.init(
         total_spent: {
             type: DataTypes.STRING,
         },
+        created_at: {
+            type: DataTypes.DATE,
+        }
     },
     {
         // dont auto update timestamps
