@@ -106,15 +106,19 @@ function findOrderSince() {
         ]
     })
     .then(dbOrData => {
-        lastOrder = dbOrData.pop();
-        console.log(lastOrder)
-        orderId = parseInt(lastOrder.order_id);
+        if (dbOrData) {
+            lastOrder = dbOrData.pop();
+            console.log(lastOrder)
+            orderId = parseInt(lastOrder.order_id)
+            .then(() => sinceFetch(orderId))
+            .catch(err => {
+                console.log(err);
+                res.status(500).json(err);
+            });
+        } else {
+            return;
+        }
     })
-    .then(() => sinceFetch(orderId))
-    .catch(err => {
-        console.log(err);
-        res.status(500).json(err);
-    });
 }
 
 function sinceFetch(orderId) {

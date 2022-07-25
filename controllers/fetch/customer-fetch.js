@@ -44,9 +44,13 @@ function findCustomerSince() {
         ]
     })
     .then(dbCusData => {
-        lastCustomer = dbCusData.pop();
-        console.log(lastCustomer)
-        customerId = parseInt(lastCustomer.customer_id);
+        if (dbCusData) {
+            lastCustomer = dbCusData.pop();
+            console.log(lastCustomer)
+            customerId = parseInt(lastCustomer.customer_id);
+        } else {
+            return;
+        }
     })
     .then(() => sinceFetch(customerId))
     .catch(err => {
