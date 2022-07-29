@@ -9,7 +9,6 @@ const express = require('express');
 const routes = require('./controllers');
 const dotenv = require('dotenv')
 const path = require('path');
-const pug = require('pug');
 const helper = require('./utils/helper');
 const { Shopify, ApiVersion } = require('@shopify/shopify-api');
 
